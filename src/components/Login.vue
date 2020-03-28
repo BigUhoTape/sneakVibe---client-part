@@ -1,6 +1,6 @@
 <template>
     <div class="login">
-        <div v-if="error !== ''" class="login__error">{{ error }}</div>
+        <div v-if="SUCCESS_ERROR.error !== ''" class="login__error">{{ SUCCESS_ERROR.error }}</div>
         <div class="loginInput">
             <input type="text" v-model="email" id="dynamic-label-input" placeholder="Enter ur email">
             <label for="dynamic-label-input">Enter ur email</label>
@@ -10,63 +10,59 @@
             <label for="dynamic-label-input-pass">Enter ur password</label>
         </div>
         <button @click="loginUser" class="login__btn">Login</button>
-<!--        <LoginWith />-->
     </div>
 </template>
 
 <script>
-    import axios from 'axios'
-    import { mapActions } from 'vuex'
-    // import LoginWith from "./LoginWith";
+  import {mapActions, mapGetters, mapMutations} from 'vuex'
 
-    export default {
-        name: 'Login',
-        components: {
-            // LoginWith
-        },
-        data() {
-            return {
-                email: '',
-                password: '',
-                error: ''
-            }
-        },
-        methods: {
-            ...mapActions([
-                'CHANGE_LOGIN_STATUS',
-                'GET_USER_INFORMATION'
-            ]),
-            async loginUser() {
-                let user = {
-                    email: this.email,
-                    password: this.password
-                };
-                await axios.post('http://localhost:8081/api/user/login', user)
-                    .then(res => {
-                        if (res.status === 200) {
-                            localStorage.setItem('token', res.data.token);
-                            this.CHANGE_LOGIN_STATUS();
-                            this.$router.go(-1);
-                        }
-                    }, err => {
-                        console.log(err.response);
-                        this.error = err.response.data.error;
-                    });
-                this.GET_USER_INFORMATION();
-            }
-        }
+  export default {
+    name: 'Login',
+    components: {},
+    data() {
+      return {
+        email: '',
+        password: '',
+      }
+    },
+    methods: {
+      ...mapActions([
+        'CHANGE_LOGIN_STATUS',
+        'GET_USER_INFORMATION',
+        'LOGIN_USER'
+      ]),
+      ...mapMutations([
+        'MOUNT_SUCCESS_ERROR'
+      ]),
+      loginUser() {
+        const user = {
+          email: this.email,
+          password: this.password
+        };
+        this.LOGIN_USER(user);
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'SUCCESS_ERROR'
+      ])
+    },
+    mounted() {
+      this.MOUNT_SUCCESS_ERROR();
     }
+  }
 </script>
 
 <style lang="less" scoped>
-    @keyframes show{
-        0%{
-            opacity:0;
+    @keyframes show {
+        0% {
+            opacity: 0;
         }
         100% {
-            opacity:1;
+            opacity: 1;
         }
     }
+
     .login {
         display: flex;
         flex-direction: column;
@@ -76,6 +72,7 @@
         animation: show .5s 1;
         animation-fill-mode: forwards;
         animation-delay: .2s;
+
         &__btn {
             width: 600px;
             height: 60px;
@@ -86,6 +83,7 @@
             font-size: 20px;
             outline: none;
         }
+
         &__error {
             display: flex;
             justify-content: center;
@@ -102,11 +100,13 @@
             margin-bottom: 50px;
         }
     }
+
     .loginInput {
         position: relative;
         padding-top: 1.5rem;
         margin-bottom: 50px;
     }
+
     label {
         position: absolute;
         top: 0;
@@ -118,10 +118,12 @@
         font-family: 'Tahoma', serif;
         color: #404040;
     }
+
     input:placeholder-shown + label {
         opacity: 0;
         transform: translateY(1rem);
     }
+
     input {
         width: 600px;
         height: 40px;

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import router from "../../router";
 
 export default {
   CHANGE_LOGIN_STATUS({commit}) {
@@ -19,24 +20,37 @@ export default {
     })
   },
   UPDATE_USER_ADDRESS({commit}, userData) {
-      return axios({
-        url: 'http://localhost:8081/api/user/edit',
-        method: 'put',
-        headers: { token: localStorage.getItem('token') },
-        data: {
-          name: userData.name,
-          surname: userData.surname,
-          gender: userData.gender,
-          country: userData.country,
-          city: userData.city,
-          address: userData.address,
-          phonenumber: userData.phonenumber,
-          cityIndex: userData.cityIndex
+    return axios({
+      url: 'http://localhost:8081/api/user/edit',
+      method: 'put',
+      headers: {token: localStorage.getItem('token')},
+      data: {
+        name: userData.name,
+        surname: userData.surname,
+        gender: userData.gender,
+        country: userData.country,
+        city: userData.city,
+        address: userData.address,
+        phonenumber: userData.phonenumber,
+        cityIndex: userData.cityIndex
+      }
+    }).then(res => {
+      commit('SET_SUCCESS', res.data.title);
+    }).catch(err => {
+      commit('SET_ERROR', err.response.data.title);
+    })
+  },
+  LOGIN_USER({dispatch ,commit}, userData) {
+    return axios.post('http://localhost:8081/api/user/login', userData)
+      .then(res => {
+        if (res.status === 200) {
+          localStorage.setItem('token', res.data.token);
+          dispatch('CHANGE_LOGIN_STATUS');
+          router.go(-1);
+          dispatch('GET_USER_INFORMATION');
         }
-      }).then(res => {
-        commit('SET_SUCCESS', res.data.title);
-      }).catch(err => {
-        commit('SET_ERROR', err.response.data.title);
-      })
+      }, err => {
+        commit('SET_ERROR', err.response.data.error);
+      });
   }
 }
