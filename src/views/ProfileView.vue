@@ -24,8 +24,8 @@
 <script>
   import Signup from "../components/Signup";
   import Login from "../components/Login";
-  import GeneralUserInfo from "../components/generalUserInfo";
-  import AdditionalUserInfo from "../components/additionalUserInfo";
+  import GeneralUserInfo from "../components/GeneralUserInfo";
+  import AdditionalUserInfo from "../components/AdditionalUserInfo";
   import RadioComponent from "../components/RadioComponent";
   import {mapGetters} from 'vuex'
 
@@ -70,6 +70,9 @@
 </script>
 
 <style lang="less" scoped>
+    .profileView {
+        padding-top: 170px;
+    }
     .profileMain {
         display: flex;
         flex-direction: column;

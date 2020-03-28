@@ -1,72 +1,75 @@
 <template>
     <div class="additionalUserInfo">
-        <div v-if="error !== ''" class="additionalUserInfo__error">{{error}}</div>
-        <div v-else-if="success !== ''" class="additionalUserInfo__success">{{success}}</div>
+        <div v-if="SUCCESS_ERROR.error !== ''" class="additionalUserInfo__error">{{SUCCESS_ERROR.error}}</div>
+        <div v-else-if="SUCCESS_ERROR.success !== ''" class="additionalUserInfo__success">{{SUCCESS_ERROR.success}}
+        </div>
         <div class="additionalUserInfo-main">
-            <input type="text" v-model="USER_INFO.country" class="additionalUserInfo-main__input" placeholder="Enter ur country">
-            <input type="text" v-model="USER_INFO.city" class="additionalUserInfo-main__input" placeholder="Enter ur city">
-            <input type="text" v-model="USER_INFO.address" class="additionalUserInfo-main__input" placeholder="Enter ur address">
-            <input type="text" v-model="USER_INFO.cityIndex" class="additionalUserInfo-main__input" placeholder="Enter ur cityIndex">
-            <input type="text" v-model="USER_INFO.phonenumber" class="additionalUserInfo-main__input" placeholder="Enter ur phonenumber">
-            <button @click="changeAddress" class="additionalUserInfo-main__btn">Save Changes</button>
+            <input type="text" v-model="USER_INFO.country" class="additionalUserInfo-main__input"
+                   placeholder="Enter ur country">
+            <input type="text" v-model="USER_INFO.city" class="additionalUserInfo-main__input"
+                   placeholder="Enter ur city">
+            <input type="text" v-model="USER_INFO.address" class="additionalUserInfo-main__input"
+                   placeholder="Enter ur address">
+            <input type="text" v-model="USER_INFO.cityIndex" class="additionalUserInfo-main__input"
+                   placeholder="Enter ur cityIndex">
+            <input type="text" v-model="USER_INFO.phonenumber" class="additionalUserInfo-main__input"
+                   placeholder="Enter ur phonenumber">
+            <button @click="updateUser" class="additionalUserInfo-main__btn">Save Changes</button>
         </div>
     </div>
 </template>
 
 <script>
-    import { mapGetters } from 'vuex'
-    import axios from 'axios'
+  import {mapGetters, mapActions, mapMutations} from 'vuex'
 
-    export default {
-        data() {
-            return {
-                error: '',
-                success: ''
-            }
-        },
-        methods: {
-          async changeAddress() {
-              await axios({
-                  url: 'http://localhost:8081/api/user/edit',
-                  method: 'put',
-                  headers: { token: localStorage.getItem('token') },
-                  data: {
-                      name: this.USER_INFO.name,
-                      surname: this.USER_INFO.surname,
-                      gender: this.USER_INFO.gender,
-                      country: this.USER_INFO.country,
-                      city: this.USER_INFO.city,
-                      address: this.USER_INFO.address,
-                      phonenumber: this.USER_INFO.phonenumber,
-                      cityIndex: this.USER_INFO.cityIndex
-                  }
-              }).then(res => {
-                  console.log(res);
-                  this.error = '';
-                  this.success = res.data.title;
-              }, err => {
-                  this.success = '';
-                  this.error = err.response.data.title;
-              })
-          }
-        },
-        computed: {
-            ...mapGetters([
-                'USER_INFO'
-            ])
-        }
+  export default {
+    data() {
+      return {
+      }
+    },
+    methods: {
+      ...mapActions([
+        'UPDATE_USER_ADDRESS'
+      ]),
+      ...mapMutations([
+        'MOUNT_SUCCESS_ERROR'
+      ]),
+      updateUser() {
+        const userData = {
+          name: this.USER_INFO.name,
+          surname: this.USER_INFO.surname,
+          gender: this.USER_INFO.gender,
+          country: this.USER_INFO.country,
+          city: this.USER_INFO.city,
+          address: this.USER_INFO.address,
+          phonenumber: this.USER_INFO.phonenumber,
+          cityIndex: this.USER_INFO.cityIndex
+        };
+        this.UPDATE_USER_ADDRESS(userData);
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'USER_INFO',
+        'SUCCESS_ERROR'
+      ])
+    },
+    mounted() {
+      this.MOUNT_SUCCESS_ERROR();
     }
+  }
 </script>
 
 <style lang="less" scoped>
-    @keyframes show{
-        0%{
-            opacity:0;
+    @keyframes show {
+        0% {
+            opacity: 0;
         }
         100% {
-            opacity:1;
+            opacity: 1;
         }
     }
+
     .additionalUserInfo {
         display: flex;
         flex-direction: column;
@@ -77,6 +80,7 @@
         animation: show .5s 1;
         animation-fill-mode: forwards;
         animation-delay: .2s;
+
         &__error {
             display: flex;
             justify-content: center;
@@ -97,6 +101,7 @@
             animation-fill-mode: forwards;
             animation-delay: .2s;
         }
+
         &__success {
             display: flex;
             justify-content: center;
@@ -117,11 +122,13 @@
             animation-fill-mode: forwards;
             animation-delay: .2s;
         }
+
         &-main {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             margin-top: 50px;
+
             &__input {
                 width: 550px;
                 height: 40px;
@@ -134,6 +141,7 @@
                 padding-top: 1.5rem;
                 margin-bottom: 50px;
             }
+
             &__btn {
                 display: flex;
                 align-items: center;

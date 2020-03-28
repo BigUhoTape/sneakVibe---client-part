@@ -1,79 +1,80 @@
 <template>
     <div class="generalUserInfo">
-        <div v-if="error !== ''" class="generalUserInfo__error">{{ error }}</div>
-        <div v-else-if="success !== ''" class="generalUserInfo__success">{{success}}</div>
+        <div v-if="SUCCESS_ERROR.error !== ''" class="generalUserInfo__error">{{ SUCCESS_ERROR.error }}</div>
+        <div v-else-if="SUCCESS_ERROR.success !== ''" class="generalUserInfo__success">{{SUCCESS_ERROR.success}}</div>
         <div class="generalUserInfo-main">
             <input type="text" v-model="USER_INFO.name" class="generalUserInfo-main__input" placeholder="Enter ur name">
-            <input type="text" v-model="USER_INFO.surname" class="generalUserInfo-main__input" placeholder="Enter ur surname">
+            <input type="text" v-model="USER_INFO.surname" class="generalUserInfo-main__input"
+                   placeholder="Enter ur surname">
             <input type="text" :value="USER_INFO.email" readonly class="generalUserInfo-main__input">
             <div class="infoRadio">
                 <div class="infoRadio-item" @click="gender = 'male'">
-                    <input type="radio" id="gender1" v-model="USER_INFO.gender" value="male" class="infoRadio-item__radio">
+                    <input type="radio" id="gender1" v-model="USER_INFO.gender" value="male"
+                           class="infoRadio-item__radio">
                     <label for="gender1" class="infoRadio-item__label">Male</label>
                 </div>
                 <div class="infoRadio-item" @click="gender = 'female'">
-                    <input type="radio" id="gender2" v-model="USER_INFO.gender" value="female" class="infoRadio-item__radio">
+                    <input type="radio" id="gender2" v-model="USER_INFO.gender" value="female"
+                           class="infoRadio-item__radio">
                     <label for="gender2" class="infoRadio-item__label">Female</label>
                 </div>
             </div>
             <button class="generalUserInfo-main__btnPass">Change Password</button>
-            <button @click="changeUserData" class="generalUserInfo-main__btn">Save Changes</button>
+            <button @click="updateUser" class="generalUserInfo-main__btn">Save Changes</button>
         </div>
     </div>
 </template>
 
 <script>
-    import { mapGetters } from 'vuex'
-    import axios from 'axios'
+  import {mapGetters, mapActions, mapMutations} from 'vuex'
 
-    export default {
-        data() {
-            return {
-                error: '',
-                success: ''
-            }
-        },
-        methods: {
-            async changeUserData() {
-                await axios({
-                    url: 'http://localhost:8081/api/user/edit',
-                    method: 'put',
-                    headers: { token: localStorage.getItem('token') },
-                    data: {
-                        name: this.USER_INFO.name,
-                        surname: this.USER_INFO.surname,
-                        gender: this.USER_INFO.gender
-                    }
-                })
-                .then(res => {
-                    console.log(res);
-                    this.error = '';
-                    this.success = res.data.title
-                })
-                .catch(err => {
-                    console.log(err);
-                    this.success = '';
-                    this.error = err.response.data.title
-                })
-            },
-        },
-        computed: {
-            ...mapGetters([
-                'USER_INFO'
-            ])
-        }
+  export default {
+    data() {
+      return {}
+    },
+    methods: {
+      ...mapActions([
+        'UPDATE_USER_ADDRESS'
+      ]),
+      ...mapMutations([
+        'MOUNT_SUCCESS_ERROR'
+      ]),
+      updateUser() {
+        const userData = {
+          name: this.USER_INFO.name,
+          surname: this.USER_INFO.surname,
+          gender: this.USER_INFO.gender,
+          country: this.USER_INFO.country,
+          city: this.USER_INFO.city,
+          address: this.USER_INFO.address,
+          phonenumber: this.USER_INFO.phonenumber,
+          cityIndex: this.USER_INFO.cityIndex
+        };
+        this.UPDATE_USER_ADDRESS(userData);
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'USER_INFO',
+        'SUCCESS_ERROR'
+      ])
+    },
+    mounted() {
+      this.MOUNT_SUCCESS_ERROR();
     }
+  }
 </script>
 
 <style lang="less" scoped>
-    @keyframes show{
-        0%{
-            opacity:0;
+    @keyframes show {
+        0% {
+            opacity: 0;
         }
         100% {
-            opacity:1;
+            opacity: 1;
         }
     }
+
     .generalUserInfo {
         display: flex;
         flex-direction: column;
@@ -84,6 +85,7 @@
         animation: show .5s 1;
         animation-fill-mode: forwards;
         animation-delay: .2s;
+
         &__error {
             display: flex;
             justify-content: center;
@@ -104,6 +106,7 @@
             animation-fill-mode: forwards;
             animation-delay: .2s;
         }
+
         &__success {
             display: flex;
             justify-content: center;
@@ -124,11 +127,13 @@
             animation-fill-mode: forwards;
             animation-delay: .2s;
         }
+
         &-main {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             margin-top: 50px;
+
             &__input {
                 width: 550px;
                 height: 40px;
@@ -141,6 +146,7 @@
                 padding-top: 1.5rem;
                 margin-bottom: 50px;
             }
+
             &__btn {
                 display: flex;
                 align-items: center;
@@ -154,6 +160,7 @@
                 font-size: 20px;
                 outline: none;
             }
+
             &__btnPass {
                 display: flex;
                 align-items: center;
@@ -169,16 +176,20 @@
             }
         }
     }
+
     .infoRadio {
         display: flex;
         justify-content: space-between;
         width: 550px;
         margin-top: 10px;
+
         &-item {
             height: 60px;
+
             &__radio {
                 display: none;
             }
+
             &__label {
                 display: flex;
                 justify-content: center;
@@ -192,11 +203,13 @@
                 font-family: 'Tahoma', serif;
                 letter-spacing: 1.2px;
             }
+
             &:hover {
                 background-color: black;
                 color: #ffffff;
                 transition: .3s;
             }
+
             &__radio:checked + &__label {
                 background-color: black;
                 color: #ffffff;

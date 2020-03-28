@@ -49,11 +49,11 @@
                 { title: 'brand', link: '/brand' },
                 { title: 'man', link: '/man' },
                 { title: 'woman', link: '/woman' },
-                { title: 'sale', link: '/discount' }
+                { title: 'sale', link: '/sale' }
             ],
             NavBarRight: [
                 { class: 'fas fa-star right-nav__icon', link: '/chosenProducts' },
-                { class: 'fas fa-shopping-basket right-nav__icon', link: '/cart' },
+                { class: 'fas fa-shopping-basket right-nav__icon', link: '/basket' },
             ],
             NavBarRightDesired: [
                 { class: 'fas fa-search right-nav__icon', link: '/search' },
@@ -94,7 +94,7 @@
         justify-content: space-between;
         width: 100%;
         height: 110px;
-        background-color: #fff;
+        background-color: rgba(#fff, .99);
         position: fixed;
         z-index: 99;
         &__content {
@@ -143,6 +143,7 @@
             padding: 0;
             color: red;
             font-size: 20px;
+            background-color: rgba(#fff, .99);
         }
         &__icon {
             color: #A8A8A8;

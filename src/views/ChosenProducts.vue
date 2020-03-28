@@ -8,6 +8,8 @@
 
 </script>
 
-<style lang="less">
-
+<style scoped lang="less">
+    .chosenProducts {
+        padding-top: 170px;
+    }
 </style>

@@ -1,11 +1,11 @@
 <template>
-    <div class="searchView">
-        <h1>Search page</h1>
+    <div class="cartView">
+        <h1>Cart page</h1>
     </div>
 </template>
 
 <style scoped lang="less">
-    .searchView {
+    .cartView {
         padding-top: 170px;
     }
 </style>
