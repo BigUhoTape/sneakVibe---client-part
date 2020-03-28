@@ -52,5 +52,20 @@ export default {
       }, err => {
         commit('SET_ERROR', err.response.data.error);
       });
+  },
+  SIGNUP_USER({commit} ,userData) {
+    console.log(userData);
+    commit('SET_ERROR', '');
+    return axios({
+      url: 'http://localhost:8081/api/user/signup',
+      method: 'post',
+      data: {
+        name: userData.name,
+        email: userData.email,
+        surname: userData.surname,
+        password: userData.password,
+        gender: userData.gender
+      }
+    })
   }
 }
