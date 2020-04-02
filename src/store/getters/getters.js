@@ -18,9 +18,24 @@ export default {
         id: item._id,
         image: item.images[0],
         model: item.model.replace('Арт.', ''),
-        price: item.price
+        price: item.price,
+        discountPrice: item.discountPrice
       }
     });
     return products;
+  },
+  SLIDER_SALE_PRODUCTS(state) {
+    let saleProducts = state.products.products.filter(product => product.discountPrice);
+    saleProducts = saleProducts.map(item => {
+      return {
+        id: item._id,
+        image: item.images[0],
+        model: item.model.replace('Арт.', ''),
+        price: item.price,
+        discountPrice: item.discountPrice
+      }
+    });
+    saleProducts = saleProducts.slice(-12);
+    return saleProducts;
   }
 }

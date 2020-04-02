@@ -20,12 +20,14 @@
                 <p class="man-woman-item__name man-woman-item__name_woman">Женщинам</p>
             </router-link>
         </div>
-        <div class="homeSlider">
+        <div class="container homeSlider">
             <RadioComponent @changeRadio="radioValue" :propRadio="propRadio"/>
             <div v-if="slider === 'New'" class="container">
                 <Slider :products="SLIDER_NEW_PRODUCTS"/>
             </div>
-            <div v-else>2</div>
+            <div v-else-if="slider === 'Sale'" class="container">
+                <Slider :products="SLIDER_SALE_PRODUCTS"/>
+            </div>
         </div>
     </div>
 </template>
@@ -57,7 +59,8 @@
     },
     computed: {
       ...mapGetters([
-        'SLIDER_NEW_PRODUCTS'
+        'SLIDER_NEW_PRODUCTS',
+        'SLIDER_SALE_PRODUCTS'
       ])
     }
   }
