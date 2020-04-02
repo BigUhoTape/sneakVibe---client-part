@@ -22,7 +22,9 @@
         </div>
         <div class="container homeSlider">
             <RadioComponent @changeRadio="radioValue" :propRadio="propRadio"/>
-            <div v-if="slider === 'New'">1</div>
+            <div v-if="slider === 'New'" class="container">
+                <Slider />
+            </div>
             <div v-else>2</div>
         </div>
     </div>
@@ -30,11 +32,13 @@
 
 <script>
   import RadioComponent from "../components/RadioComponent";
+  import Slider from "../components/Slider";
 
   export default {
     name: 'Home',
     components: {
-      RadioComponent
+      RadioComponent,
+      Slider
     },
     data() {
       return {
