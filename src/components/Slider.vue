@@ -1,18 +1,17 @@
 <template>
     <swiper class="swiper" ref="swiper" :options="swiperOption">
-        <swiper-slide>Resize me 1</swiper-slide>
-        <swiper-slide>Resize me 2</swiper-slide>
-        <swiper-slide>Resize me 3</swiper-slide>
-        <swiper-slide>Resize me 4</swiper-slide>
-        <swiper-slide>Resize me 5</swiper-slide>
-        <swiper-slide>Resize me 6</swiper-slide>
+        <swiper-slide v-for="product in products"
+                      :key="product._id">
+            <SliderItem :productInfo="product"/>
+        </swiper-slide>
         <div class="swiper-button-prev" slot="button-prev"></div>
         <div class="swiper-button-next" slot="button-next"></div>
     </swiper>
 </template>
 
 <script>
-  import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
+  import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
+  import SliderItem from "./SliderItem";
   import 'swiper/css/swiper.css'
 
   export default {
@@ -20,13 +19,22 @@
     title: 'Change direction',
     components: {
       Swiper,
-      SwiperSlide
+      SwiperSlide,
+      SliderItem
+    },
+    props: {
+      products: {
+        type: Array,
+        default() {
+          return [];
+        }
+      }
     },
     data() {
       return {
         swiperOption: {
           slidesPerView: 4,
-          spaceBetween: 30,
+          spaceBetween: 90,
           direction: 'horizontal',
           navigation: {
             nextEl: '.swiper-button-next',
@@ -49,19 +57,12 @@
 
 <style scoped lang="scss">
     .swiper {
-        height: 300px;
+        height: 500px;
         width: 100%;
-
-        .swiper-slide {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            font-weight: bold;
-            font-size: 20 * 2;
-            background-color: black;
-        }
+        display: flex;
+        align-items: center;
     }
+
     .swiper-button-prev {
         left: 20px;
     }

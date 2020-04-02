@@ -20,10 +20,10 @@
                 <p class="man-woman-item__name man-woman-item__name_woman">Женщинам</p>
             </router-link>
         </div>
-        <div class="container homeSlider">
+        <div class="homeSlider">
             <RadioComponent @changeRadio="radioValue" :propRadio="propRadio"/>
             <div v-if="slider === 'New'" class="container">
-                <Slider />
+                <Slider :products="SLIDER_NEW_PRODUCTS"/>
             </div>
             <div v-else>2</div>
         </div>
@@ -33,6 +33,7 @@
 <script>
   import RadioComponent from "../components/RadioComponent";
   import Slider from "../components/Slider";
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'Home',
@@ -53,6 +54,11 @@
       radioValue(value) {
         this.slider = value;
       }
+    },
+    computed: {
+      ...mapGetters([
+        'SLIDER_NEW_PRODUCTS'
+      ])
     }
   }
 </script>
@@ -157,5 +163,6 @@
         flex-direction: column;
         align-items: center;
         margin-top: 110px;
+        margin-bottom: 100px;
     }
 </style>
