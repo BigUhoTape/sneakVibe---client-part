@@ -27,6 +27,7 @@ export default new Vuex.Store({
         liked: {items: []}
       }
     },
+    products: [],
     success: '',
     error: ''
   },

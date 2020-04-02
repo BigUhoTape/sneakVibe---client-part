@@ -20,5 +20,8 @@ export default {
   MOUNT_SUCCESS_ERROR(state) {
     state.success = '';
     state.error = ''
+  },
+  SET_ALL_PRODUCTS_TO_STATE(state, products) {
+    state.products = products;
   }
 }

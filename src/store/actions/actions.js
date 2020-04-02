@@ -54,7 +54,6 @@ export default {
       });
   },
   SIGNUP_USER({commit} ,userData) {
-    console.log(userData);
     commit('SET_ERROR', '');
     return axios({
       url: 'http://localhost:8081/api/user/signup',
@@ -67,5 +66,15 @@ export default {
         gender: userData.gender
       }
     })
+  },
+  GET_ALL_PRODUCTS({commit}) {
+    return axios.get('http://localhost:8081/api/product')
+      .then(products => {
+        commit('SET_ALL_PRODUCTS_TO_STATE', products.data);
+        return products;
+      }).catch(err => {
+        console.log(err);
+        return err;
+      })
   }
 }
