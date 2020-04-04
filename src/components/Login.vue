@@ -16,8 +16,19 @@
             </div>
         </div>
         <div class="loginInput">
-            <input type="password" v-model="password" id="dynamic-label-input-pass" placeholder="Enter ur password">
+            <input type="password"
+                   v-model="password"
+                   id="dynamic-label-input-pass"
+                   :class="{'isInvalidEmail': $v.password.$error}"
+                   @input="$v.password.$touch()"
+                   placeholder="Enter ur password">
             <label for="dynamic-label-input-pass">Enter ur password</label>
+            <div v-if="isValidPassword">
+                <div v-if="!$v.password.required" class="loginInput__error">Password is required</div>
+                <div class="loginInput__error" v-if="!$v.password.minLength">
+                    Min length of password is {{$v.password.$params.minLength.min}}. Now it's {{ password.length }}
+                </div>
+            </div>
         </div>
         <button @click="loginUser" class="login__btn">Login</button>
     </div>
@@ -25,7 +36,7 @@
 
 <script>
   import {mapActions, mapGetters, mapMutations} from 'vuex'
-  import {required, email} from 'vuelidate/lib/validators'
+  import {required, email, minLength} from 'vuelidate/lib/validators'
 
   export default {
     name: 'Login',
@@ -33,19 +44,27 @@
     watch: {
       email() {
         this.isValidEmail = true
+      },
+      password() {
+        this.isValidPassword = true;
       }
     },
     validations: {
       email: {
         required,
         email,
-        isValidEmail: false
+      },
+      password: {
+        required,
+        minLength: minLength(6)
       }
     },
     data() {
       return {
         email: '',
         password: '',
+        isValidEmail: false,
+        isValidPassword: false
       }
     },
     methods: {
