@@ -2,8 +2,18 @@
     <div class="login">
         <div v-if="SUCCESS_ERROR.error !== ''" class="login__error">{{ SUCCESS_ERROR.error }}</div>
         <div class="loginInput">
-            <input type="text" v-model="email" id="dynamic-label-input" placeholder="Enter ur email">
+            <input type="email"
+                   v-model="email"
+                   id="dynamic-label-input"
+                   :class="{'isInvalidEmail': $v.email.$error}"
+                   placeholder="Enter ur email"
+                   @input="$v.email.$touch()"
+            >
             <label for="dynamic-label-input">Enter ur email</label>
+            <div v-if="isValidEmail">
+                <div class="loginInput__error" v-if="!$v.email.required">Email is required</div>
+                <div class="loginInput__error" v-if="!$v.email.email">Email is invalid</div>
+            </div>
         </div>
         <div class="loginInput">
             <input type="password" v-model="password" id="dynamic-label-input-pass" placeholder="Enter ur password">
@@ -15,10 +25,23 @@
 
 <script>
   import {mapActions, mapGetters, mapMutations} from 'vuex'
+  import {required, email} from 'vuelidate/lib/validators'
 
   export default {
     name: 'Login',
     components: {},
+    watch: {
+      email() {
+        this.isValidEmail = true
+      }
+    },
+    validations: {
+      email: {
+        required,
+        email,
+        isValidEmail: false
+      }
+    },
     data() {
       return {
         email: '',
@@ -102,9 +125,18 @@
     }
 
     .loginInput {
+        display: flex;
+        flex-direction: column;
         position: relative;
         padding-top: 1.5rem;
         margin-bottom: 50px;
+
+        &__error {
+            padding-left: 10px;
+            color: red;
+            font-size: 20px;
+            margin-top: 5px;
+        }
     }
 
     label {
@@ -131,6 +163,17 @@
         font-size: 20px;
         border: none;
         border-bottom: 2px solid gray;
+        outline: none;
+        padding-left: 10px;
+    }
+
+    .isInvalidEmail {
+        width: 600px;
+        height: 40px;
+        font-family: 'Tahoma', serif;
+        font-size: 20px;
+        border: 2px solid red;
+        border-radius: 5px;
         outline: none;
         padding-left: 10px;
     }

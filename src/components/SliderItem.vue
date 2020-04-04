@@ -35,7 +35,7 @@
         transition: .3s;
         margin-right: 20px;
         &__image {
-            width: 300px;
+            width: 95%;
         }
         &__model {
             font-family: 'Tahoma', serif;
