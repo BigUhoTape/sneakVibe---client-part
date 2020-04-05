@@ -1,41 +1,80 @@
 <template>
     <div class="signup">
-        <div v-if="error !== ''" class="signup__error">{{error}}</div>
         <div class="signupForm">
             <div class="signupInput">
-                <input type="email" v-model="userData.email" id="dynamic-label-input" placeholder="Enter ur email"/>
+                <input type="email"
+                       v-model="email"
+                       id="dynamic-label-input"
+                       :class="{'isInvalid': $v.email.$error}"
+                       @input="$v.email.$touch()"
+                       placeholder="Enter ur email"/>
                 <label for="dynamic-label-input" class="labelText">Enter ur email</label>
+                <div v-if="isValidEmail">
+                    <div class="signupInput__error" v-if="!$v.email.required">Email is required</div>
+                    <div class="signupInput__error" v-if="!$v.email.email">Invalid email</div>
+                    <div class="signupInput__error" v-if="error">{{error}}</div>
+                </div>
             </div>
             <div class="signupInput">
-                <input type="text" v-model="userData.name" id="dynamic-label-input-name" placeholder="Enter ur name"/>
+                <input type="text"
+                       v-model="name"
+                       :class="{'isInvalid': $v.name.$error}"
+                       @input="$v.name.$touch()"
+                       id="dynamic-label-input-name"
+                       placeholder="Enter ur name"/>
                 <label for="dynamic-label-input-name" class="labelText">Enter ur name</label>
+                <div v-if="isValidName">
+                    <div class="signupInput__error" v-if="!$v.name.required">Name is required</div>
+                </div>
             </div>
             <div class="signupInput">
-                <input type="text" v-model="userData.surname" id="dynamic-label-input-surname" placeholder="Enter ur surname"/>
+                <input type="text"
+                       v-model="surname"
+                       :class="{'isInvalid': $v.surname.$error}"
+                       @input="$v.surname.$touch()"
+                       id="dynamic-label-input-surname"
+                       placeholder="Enter ur surname"/>
                 <label for="dynamic-label-input-surname" class="labelText">Enter ur surname</label>
+                <div v-if="isValidSurname">
+                    <div class="signupInput__error" v-if="!$v.surname.required">Surname is required</div>
+                </div>
             </div>
             <div class="signupInput">
-                <input type="password" v-model="userData.password" id="dynamic-label-input-password"
+                <input type="password"
+                       v-model="password"
+                       :class="{'isInvalid': $v.password.$error}"
+                       @input="$v.password.$touch()"
+                       id="dynamic-label-input-password"
                        placeholder="Enter ur password"/>
                 <label for="dynamic-label-input-password" class="labelText">Enter ur password</label>
+                <div v-if="isValidPassword">
+                    <div class="signupInput__error" v-if="!$v.password.required">Surname is required</div>
+                    <div class="signupInput__error" v-if="!$v.password.minLength">
+                        Min length of password is {{$v.password.$params.minLength.min}}. Now it's {{ password.length }}
+                    </div>
+                </div>
             </div>
             <div class="signupRadio">
-                <div class="signupRadio-item" @click="userData.gender = 'male'">
-                    <input type="radio" v-model="userData.gender" id="gender1" value="male" class="signupRadio-item__radio">
+                <div class="signupRadio-item" @click="gender = 'male'">
+                    <input type="radio" v-model="gender" id="gender1" value="male" class="signupRadio-item__radio">
                     <label for="gender1" class="signupRadio-item__label">Male</label>
                 </div>
-                <div class="signupRadio-item" @click="userData.gender = 'female'">
-                    <input type="radio" v-model="userData.gender" id="gender2" value="female" class="signupRadio-item__radio">
+                <div class="signupRadio-item" @click="gender = 'female'">
+                    <input type="radio" v-model="gender" id="gender2" value="female" class="signupRadio-item__radio">
                     <label for="gender2" class="signupRadio-item__label">Female</label>
                 </div>
             </div>
-            <button @click="signup(userData)" class="signupForm__btn">Sign up</button>
+            <button :disabled="$v.$invalid"
+                    :class="{'signupForm__btn-disabled': $v.$invalid}"
+                    @click="signup()"
+                    class="signupForm__btn">Sign up</button>
         </div>
     </div>
 </template>
 
 <script>
   import {mapActions} from 'vuex'
+  import {required, email, minLength} from 'vuelidate/lib/validators'
 
   export default {
     name: 'Signup',
@@ -48,24 +87,67 @@
         }
       }
     },
+    validations: {
+      email: {
+        required,
+        email
+      },
+      name: {
+        required
+      },
+      surname: {
+        required
+      },
+      password: {
+        required,
+        minLength: minLength(6)
+      },
+      gender: {
+        required
+      }
+    },
+    watch: {
+      email() {
+        this.isValidEmail = true;
+        this.error = '';
+      },
+      name() {
+        this.isValidName = true;
+      },
+      surname() {
+        this.isValidSurname = true;
+      },
+      password() {
+        this.isValidPassword = true;
+      }
+    },
     data() {
       return {
-        userData: {
-          name: '',
-          email: '',
-          surname: '',
-          password: '',
-          gender: '',
-        },
+        name: '',
+        email: '',
+        surname: '',
+        password: '',
+        gender: '',
         error: '',
-        isSignUp: this.isSignIn
+        isSignUp: this.isSignIn,
+        isValidEmail: false,
+        isValidName: false,
+        isValidSurname: false,
+        isValidPassword: false,
       }
     },
     methods: {
       ...mapActions([
         'SIGNUP_USER'
       ]),
-      signup(userData) {
+      signup() {
+        const userData = {
+          name: this.name,
+          email: this.email,
+          surname: this.surname,
+          password: this.password,
+          gender: this.gender,
+        };
         this.SIGNUP_USER(userData)
           .then(() => {
             this.isSignUp = 'Log in';
@@ -130,6 +212,9 @@
             outline: none;
             background-color: black;
             margin-top: 50px;
+            &-disabled {
+                background-color: rgba(#000, .6);
+            }
         }
     }
 
@@ -137,6 +222,12 @@
         position: relative;
         padding-top: 1.5rem;
         margin-bottom: 50px;
+        &__error {
+            padding-left: 10px;
+            color: red;
+            font-size: 20px;
+            margin-top: 5px;
+        }
     }
 
     .labelText {
@@ -203,5 +294,9 @@
                 color: #ffffff;
             }
         }
+    }
+    .isInvalid {
+        border: 2px solid red !important;
+        border-radius: 5px;
     }
 </style>
