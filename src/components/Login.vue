@@ -1,6 +1,5 @@
 <template>
     <div class="login">
-        <div v-if="SUCCESS_ERROR.error !== ''" class="login__error">{{ SUCCESS_ERROR.error }}</div>
         <div class="loginInput">
             <input type="email"
                    v-model="email"
@@ -13,6 +12,7 @@
             <div v-if="isValidEmail">
                 <div class="loginInput__error" v-if="!$v.email.required">Email is required</div>
                 <div class="loginInput__error" v-if="!$v.email.email">Email is invalid</div>
+                <div v-if="SUCCESS_ERROR.error !== ''" class="loginInput__error">{{ SUCCESS_ERROR.error }}</div>
             </div>
         </div>
         <div class="loginInput">
@@ -30,7 +30,10 @@
                 </div>
             </div>
         </div>
-        <button @click="loginUser" class="login__btn">Login</button>
+        <button :disabled="$v.$invalid"
+                @click="loginUser"
+                :class="{'login__btn-disabled': $v.$invalid}"
+                class="login__btn">Login</button>
     </div>
 </template>
 
@@ -43,6 +46,7 @@
     components: {},
     watch: {
       email() {
+        this.MOUNT_SUCCESS_ERROR();
         this.isValidEmail = true
       },
       password() {
@@ -77,6 +81,7 @@
         'MOUNT_SUCCESS_ERROR'
       ]),
       loginUser() {
+        this.MOUNT_SUCCESS_ERROR();
         const user = {
           email: this.email,
           password: this.password
@@ -124,6 +129,9 @@
             font-family: 'Tahoma', serif;
             font-size: 20px;
             outline: none;
+            &-disabled {
+                background-color: rgba(#000, .6);
+            }
         }
 
         &__error {
