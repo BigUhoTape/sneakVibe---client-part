@@ -34,13 +34,14 @@
         padding: 25px;
         transition: .3s;
         margin-right: 20px;
+        height: 90%;
         &__image {
             width: 95%;
         }
         &__model {
             font-family: 'Tahoma', serif;
             font-size: 25px;
-            margin-top: 40px;
+            margin-top: 20px;
             text-align: left;
         }
         &:hover {
