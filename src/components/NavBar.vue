@@ -46,7 +46,6 @@
         data: () => ({
             NavBarLeft: [
                 { title: 'sneakVibe', link: '/' },
-                { title: 'brand', link: '/brand' },
                 { title: 'man', link: '/man' },
                 { title: 'woman', link: '/woman' },
                 { title: 'sale', link: '/sale' }
