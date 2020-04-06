@@ -1,7 +1,6 @@
 <template>
     <div class="additionalUserInfo">
-        <div v-if="SUCCESS_ERROR.error !== ''" class="additionalUserInfo__error">{{SUCCESS_ERROR.error}}</div>
-        <div v-else-if="SUCCESS_ERROR.success !== ''" class="additionalUserInfo__success">{{SUCCESS_ERROR.success}}
+        <div v-if="SUCCESS_ERROR.success !== ''" class="additionalUserInfo__success">{{SUCCESS_ERROR.success}}
         </div>
         <div class="additionalUserInfo-main">
             <input type="text" v-model="USER_INFO.country" class="additionalUserInfo-main__input"
@@ -36,9 +35,6 @@
       ]),
       updateUser() {
         const userData = {
-          name: this.USER_INFO.name,
-          surname: this.USER_INFO.surname,
-          gender: this.USER_INFO.gender,
           country: this.USER_INFO.country,
           city: this.USER_INFO.city,
           address: this.USER_INFO.address,

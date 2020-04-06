@@ -24,16 +24,7 @@ export default {
       url: 'http://localhost:8081/api/user/edit',
       method: 'put',
       headers: {token: localStorage.getItem('token')},
-      data: {
-        name: userData.name,
-        surname: userData.surname,
-        gender: userData.gender,
-        country: userData.country,
-        city: userData.city,
-        address: userData.address,
-        phonenumber: userData.phonenumber,
-        cityIndex: userData.cityIndex
-      }
+      data: userData
     }).then(res => {
       commit('SET_SUCCESS', res.data.title);
     }).catch(err => {

@@ -1,11 +1,25 @@
 <template>
     <div class="generalUserInfo">
-        <div v-if="SUCCESS_ERROR.error !== ''" class="generalUserInfo__error">{{ SUCCESS_ERROR.error }}</div>
-        <div v-else-if="SUCCESS_ERROR.success !== ''" class="generalUserInfo__success">{{SUCCESS_ERROR.success}}</div>
+        <div v-if="SUCCESS_ERROR.success !== ''" class="generalUserInfo__success">{{SUCCESS_ERROR.success}}</div>
         <div class="generalUserInfo-main">
-            <input type="text" v-model="USER_INFO.name" class="generalUserInfo-main__input" placeholder="Enter ur name">
-            <input type="text" v-model="USER_INFO.surname" class="generalUserInfo-main__input"
-                   placeholder="Enter ur surname">
+            <div class="generalUserInfo__item">
+                <input type="text"
+                       v-model="USER_INFO.name"
+                       :class="{'isInvalid': $v.USER_INFO.name.$error}"
+                       @input="$v.USER_INFO.name.$touch()"
+                       class="generalUserInfo-main__input"
+                       placeholder="Enter ur name">
+                <div class="userInfo__error" v-if="!$v.USER_INFO.name.required">Name is required</div>
+            </div>
+            <div class="generalUserInfo__item">
+                <input type="text"
+                       v-model="USER_INFO.surname"
+                       :class="{'isInvalid': $v.USER_INFO.surname.$error}"
+                       @input="$v.USER_INFO.surname.$touch()"
+                       class="generalUserInfo-main__input"
+                       placeholder="Enter ur surname">
+                <div class="userInfo__error" v-if="!$v.USER_INFO.surname.required">Surname is required</div>
+            </div>
             <input type="text" :value="USER_INFO.email" readonly class="generalUserInfo-main__input">
             <div class="infoRadio">
                 <div class="infoRadio-item" @click="gender = 'male'">
@@ -20,17 +34,32 @@
                 </div>
             </div>
             <button class="generalUserInfo-main__btnPass">Change Password</button>
-            <button @click="updateUser" class="generalUserInfo-main__btn">Save Changes</button>
+            <button @click="updateUser"
+                    :disabled="$v.$invalid"
+                    :class="{'generalUserInfo-main__btnPass-disabled': $v.$invalid}"
+                    class="generalUserInfo-main__btn"
+            >Save Changes</button>
         </div>
     </div>
 </template>
 
 <script>
   import {mapGetters, mapActions, mapMutations} from 'vuex'
+  import {required} from 'vuelidate/lib/validators'
 
   export default {
     data() {
       return {}
+    },
+    validations: {
+      USER_INFO: {
+        name: {
+          required
+        },
+        surname: {
+          required
+        }
+      }
     },
     methods: {
       ...mapActions([
@@ -43,12 +72,7 @@
         const userData = {
           name: this.USER_INFO.name,
           surname: this.USER_INFO.surname,
-          gender: this.USER_INFO.gender,
-          country: this.USER_INFO.country,
-          city: this.USER_INFO.city,
-          address: this.USER_INFO.address,
-          phonenumber: this.USER_INFO.phonenumber,
-          cityIndex: this.USER_INFO.cityIndex
+          gender: this.USER_INFO.gender
         };
         this.UPDATE_USER_ADDRESS(userData);
       }
@@ -85,6 +109,10 @@
         animation: show .5s 1;
         animation-fill-mode: forwards;
         animation-delay: .2s;
+
+        &__item {
+            margin-bottom: 50px;
+        }
 
         &__error {
             display: flex;
@@ -143,8 +171,6 @@
                 border-bottom: 2px solid gray;
                 outline: none;
                 padding-left: 10px;
-                padding-top: 1.5rem;
-                margin-bottom: 50px;
             }
 
             &__btn {
@@ -173,6 +199,9 @@
                 font-family: 'Tahoma', serif;
                 font-size: 20px;
                 outline: none;
+                &-disabled {
+                    background-color: rgba(#000, .6);
+                }
             }
         }
     }
@@ -215,5 +244,15 @@
                 color: #ffffff;
             }
         }
+    }
+    .isInvalid {
+        border: 2px solid red !important;
+        border-radius: 5px;
+    }
+    .userInfo__error {
+        padding-left: 10px;
+        color: red;
+        font-size: 20px;
+        margin-top: 5px;
     }
 </style>
