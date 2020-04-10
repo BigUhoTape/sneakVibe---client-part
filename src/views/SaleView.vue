@@ -1,11 +1,22 @@
 <template>
     <div class="discountView">
-        <h1>Discount page</h1>
+        <CatalogMainWrapper genderProp="sale"/>
     </div>
 </template>
 
+<script>
+    import CatalogMainWrapper from "../components/CatalogMainWrapper";
+    export default {
+      components: {
+        CatalogMainWrapper
+      }
+    }
+</script>
+
 <style scoped lang="less">
     .discountView {
+        display: flex;
+        justify-content: center;
         padding-top: 170px;
     }
 </style>

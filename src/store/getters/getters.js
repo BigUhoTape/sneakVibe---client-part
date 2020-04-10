@@ -37,5 +37,31 @@ export default {
     });
     saleProducts = saleProducts.slice(-12);
     return saleProducts;
+  },
+  GENDER_PRODUCTS: (state) => gender => {
+    if (gender === 'sale') {
+      let maleProducts = state.products.products.filter(product => product.discountPrice);
+      maleProducts = maleProducts.map(product => {
+        return {
+          id: product._id,
+          image: product.images[0],
+          model: product.model.replace('Арт.', ''),
+          price: product.price,
+          discountPrice: product.discountPrice
+        }
+      });
+      return maleProducts;
+    }
+    let maleProducts = state.products.products.filter(product => product.gender === gender);
+    maleProducts = maleProducts.map(product => {
+      return {
+        id: product._id,
+        image: product.images[0],
+        model: product.model.replace('Арт.', ''),
+        price: product.price,
+        discountPrice: product.discountPrice
+      }
+    });
+    return maleProducts;
   }
 }
