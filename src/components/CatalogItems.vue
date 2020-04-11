@@ -38,6 +38,5 @@
         justify-content: space-between;
         width: 1420px;
         padding-left: 105px;
-        padding-right: 105px;
     }
 </style>

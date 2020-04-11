@@ -1,6 +1,6 @@
 <template>
     <div class="discountView">
-        <CatalogMainWrapper genderProp="sale"/>
+        <CatalogMainWrapper genderProp="sale" title="Sale"/>
     </div>
 </template>
 
