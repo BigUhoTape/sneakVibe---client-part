@@ -1,19 +1,26 @@
 <template>
     <div class="catalogItems">
-        <CatalogItem v-for="item in filteredProducts"
-                     :key="item._id"
-                     :product="item"
-        />
+        <div class="catalogItems__items">
+            <CatalogItem v-for="item in pageOfItems"
+                         :key="item._id"
+                         :product="item"
+            />
+        </div>
+        <div>
+            <JwPagination :pageSize="12" :items="filteredData" @changePage="onChangePage"/>
+        </div>
     </div>
 </template>
 
 <script>
   import CatalogItem from "./CatalogItem";
+  import JwPagination from 'jw-vue-pagination'
 
   export default {
     name: 'CatalogItems',
     components: {
-      CatalogItem
+      CatalogItem,
+      JwPagination
     },
     props: {
       genderProp: {
@@ -27,17 +34,28 @@
         default() {
           return ''
         }
+      },
+    },
+    data() {
+      return {
+        pageOfItems: []
+      }
+    },
+    methods: {
+      onChangePage(pageOfItems) {
+        this.pageOfItems = pageOfItems
       }
     },
     computed: {
-      filteredProducts() {
+      filteredData() {
         let products = this.$store.getters.GENDER_PRODUCTS(this.genderProp);
         if (this.searchValue) {
-          return products.filter(product => {
+          products = products.filter(product => {
             return product.model.toLowerCase().includes(this.searchValue.toLowerCase());
-          })
+          });
+          return products;
         }
-        return products
+        return products;
       }
     },
   }
@@ -46,9 +64,14 @@
 <style scoped lang="less">
     .catalogItems {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
+        flex-direction: column;
         width: 1420px;
         padding-left: 105px;
+
+        &__items {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
     }
 </style>
