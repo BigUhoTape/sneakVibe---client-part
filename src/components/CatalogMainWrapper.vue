@@ -13,7 +13,7 @@
         </div>
         <div class="catalogMainWrapper-main">
             <div class="filter"></div>
-            <CatalogItems :genderProp='genderProp'/>
+            <CatalogItems :genderProp='genderProp' :searchValue="searchValue"/>
         </div>
     </div>
 </template>

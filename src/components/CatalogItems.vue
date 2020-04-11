@@ -1,6 +1,6 @@
 <template>
     <div class="catalogItems">
-            <CatalogItem v-for="item in GENDER_PRODUCTS(genderProp)"
+            <CatalogItem v-for="item in filteredProducts"
                          :key="item._id"
                          :product="item"
             />
@@ -9,7 +9,6 @@
 
 <script>
   import CatalogItem from "./CatalogItem";
-  import { mapGetters } from 'vuex'
   export default {
     name: 'CatalogItems',
     components: {
@@ -21,12 +20,24 @@
         default() {
           return '';
         }
+      },
+      searchValue: {
+        type: String,
+        default() {
+          return ''
+        }
       }
     },
     computed: {
-      ...mapGetters([
-        'GENDER_PRODUCTS'
-      ])
+      filteredProducts() {
+        let products = this.$store.getters.GENDER_PRODUCTS(this.genderProp);
+        if (this.searchValue) {
+          return products.filter(product => {
+            return product.model.toLowerCase().includes(this.searchValue.toLowerCase());
+          })
+        }
+        return products
+      }
     },
   }
 </script>
