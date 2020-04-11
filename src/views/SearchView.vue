@@ -1,11 +1,22 @@
 <template>
     <div class="searchView">
-        <h1>Search page</h1>
+        <CatalogMainWrapper title="Search" :isSearching="true"/>
     </div>
 </template>
 
+<script>
+    import CatalogMainWrapper from "../components/CatalogMainWrapper";
+    export default {
+      components: {
+        CatalogMainWrapper
+      }
+    }
+</script>
+
 <style scoped lang="less">
     .searchView {
+        display: flex;
+        justify-content: center;
         padding-top: 170px;
     }
 </style>

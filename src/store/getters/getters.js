@@ -39,6 +39,18 @@ export default {
     return saleProducts;
   },
   GENDER_PRODUCTS: (state) => gender => {
+    if (gender === '') {
+      const products = state.products.products.map(product => {
+        return {
+          id: product._id,
+          image: product.images[0],
+          model: product.model.replace('Арт.', ''),
+          price: product.price,
+          discountPrice: product.discountPrice
+        }
+      });
+      return products;
+    }
     if (gender === 'sale') {
       let maleProducts = state.products.products.filter(product => product.discountPrice);
       maleProducts = maleProducts.map(product => {

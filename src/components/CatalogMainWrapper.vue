@@ -4,7 +4,8 @@
             <h2 v-if="title === 'Man'" class="catalogMainWrapper-title__title">Man</h2>
             <h2 v-if="title === 'Woman'" class="catalogMainWrapper-title__title">Woman</h2>
             <h2 v-if="title === 'Sale'" class="catalogMainWrapper-title__title-red">Sale</h2>
-            <div class="catalogMainWrapper-search">
+            <h2 v-if="title === 'Search'" class="catalogMainWrapper-title__title">Search</h2>
+            <div v-if="isSearching" class="catalogMainWrapper-search">
                 <i class="fas fa-search catalogMainWrapper-search__icon"></i>
                 <input type="text" v-model="searchValue" class="catalogMainWrapper-search__input">
                 <i class="fas fa-times-circle catalogMainWrapper-search__exit" @click="clearSearchValue"></i>
@@ -36,6 +37,12 @@
         type: String,
         default() {
           return '';
+        }
+      },
+      isSearching: {
+        type: Boolean,
+        default() {
+          return false;
         }
       }
     },
