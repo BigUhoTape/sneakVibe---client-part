@@ -1,14 +1,15 @@
 <template>
     <div class="catalogItems">
-            <CatalogItem v-for="item in filteredProducts"
-                         :key="item._id"
-                         :product="item"
-            />
+        <CatalogItem v-for="item in filteredProducts"
+                     :key="item._id"
+                     :product="item"
+        />
     </div>
 </template>
 
 <script>
   import CatalogItem from "./CatalogItem";
+
   export default {
     name: 'CatalogItems',
     components: {

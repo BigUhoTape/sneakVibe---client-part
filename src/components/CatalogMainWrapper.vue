@@ -8,7 +8,10 @@
             <div v-if="isSearching" class="catalogMainWrapper-search">
                 <i class="fas fa-search catalogMainWrapper-search__icon"></i>
                 <input type="text" v-model="searchValue" class="catalogMainWrapper-search__input">
-                <i class="fas fa-times-circle catalogMainWrapper-search__exit" @click="clearSearchValue"></i>
+                <i class="fas fa-times-circle catalogMainWrapper-search__exit"
+                   @click="clearSearchValue"
+                   v-if="searchValue"
+                ></i>
             </div>
         </div>
         <div class="catalogMainWrapper-main">
