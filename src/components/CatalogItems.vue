@@ -19,7 +19,6 @@
                   :next-class="'page'"
                   :next-link-class="'page-link opt'"
                   :active-class="'activeClass'"
-                  v-scroll-to="'#top'"
         />
     </div>
 </template>

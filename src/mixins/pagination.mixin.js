@@ -17,6 +17,10 @@ export default {
       this.itemsOnPage = this.allItems[this.page - 1] || this.allItems[0];
     },
     changePagePagination(page) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
       this.$router.push(`${this.$route.path}?page=${page}`);
       this.itemsOnPage = this.allItems[page - 1] || this.allItems[0];
     }
