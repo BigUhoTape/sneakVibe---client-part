@@ -22,6 +22,19 @@ export default {
     state.error = ''
   },
   SET_ALL_PRODUCTS_TO_STATE(state, products) {
+    products.products =  products.products.map(product => {
+      return {
+        images: product.images,
+        _id: product._id,
+        article: product.article,
+        color: product.color,
+        description: product.description,
+        discountPrice: product.discountPrice,
+        gender: product.gender,
+        price: product.price,
+        model: product.model.replace('Арт.', '').replace('Кроссовки ', '').replace('Подростковые кроссовки', '')
+      }
+    });
     state.products = products;
   }
 }

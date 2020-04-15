@@ -17,7 +17,7 @@ export default {
       return {
         id: item._id,
         image: item.images[0],
-        model: item.model.replace('Арт.', ''),
+        model: item.model,
         price: item.price,
         discountPrice: item.discountPrice
       }
@@ -30,7 +30,7 @@ export default {
       return {
         id: item._id,
         image: item.images[0],
-        model: item.model.replace('Арт.', ''),
+        model: item.model,
         price: item.price,
         discountPrice: item.discountPrice
       }
@@ -44,7 +44,7 @@ export default {
         return {
           id: product._id,
           image: product.images[0],
-          model: product.model.replace('Арт.', ''),
+          model: product.model,
           price: product.price,
           discountPrice: product.discountPrice
         }
@@ -57,7 +57,7 @@ export default {
         return {
           id: product._id,
           image: product.images[0],
-          model: product.model.replace('Арт.', ''),
+          model: product.model,
           price: product.price,
           discountPrice: product.discountPrice
         }
@@ -69,7 +69,7 @@ export default {
       return {
         id: product._id,
         image: product.images[0],
-        model: product.model.replace('Арт.', ''),
+        model: product.model,
         price: product.price,
         discountPrice: product.discountPrice
       }
