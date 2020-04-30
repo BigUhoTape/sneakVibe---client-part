@@ -69,6 +69,11 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: '/product/:id',
+    name: 'ProductView',
+    component: () => import('../views/ProductView')
   }
 ];
 
