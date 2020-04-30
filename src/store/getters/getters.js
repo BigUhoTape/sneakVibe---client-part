@@ -75,5 +75,11 @@ export default {
       }
     });
     return maleProducts;
+  },
+  PRODUCT_BY_ID: state => id => {
+    return state.products.products.find(item => item._id === id);
+  },
+  PRODUCT_STATUS(state) {
+    return state.isProducts;
   }
 }

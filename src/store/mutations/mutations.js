@@ -36,5 +36,6 @@ export default {
       }
     });
     state.products = products;
+    state.isProducts = true;
   }
 }

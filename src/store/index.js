@@ -31,7 +31,8 @@ export default new Vuex.Store({
       products: []
     },
     success: '',
-    error: ''
+    error: '',
+    isProducts: false
   },
   mutations,
   actions,
