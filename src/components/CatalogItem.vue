@@ -1,5 +1,5 @@
 <template>
-    <div class="catalogItem">
+    <router-link :to="'/product/' + product.id" class="catalogItem" tag="div">
         <img :src="product.image"
              alt="Product image"
              class="catalogItem__img"
@@ -9,7 +9,7 @@
             <p :class="{'catalogItem-price__sale': product.discountPrice.length}">{{ product.price }}</p>
         </div>
         <p class="catalogItem__name">{{product.model}}</p>
-    </div>
+    </router-link>
 </template>
 
 <script>
