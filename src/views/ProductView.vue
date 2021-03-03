@@ -1,5 +1,9 @@
 <template>
-    <div class="productView">{{product.model}}</div>
+    <div class="productView">
+        <div v-for="(image, i) in product.images" :key="i">
+            <img :src="image" alt="">
+        </div>
+    </div>
 </template>
 
 <script>
